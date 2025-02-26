@@ -17,6 +17,12 @@
 #define SET_USED(u, i) ((u) |= (1 << (i)))
 #define SET_UNUSED(u, i)  ((u) &= (~(1 << (i))))
 
+void print_array(
+    uint8_t n_max,
+    uint16_t chiffres[n_max],
+    uint8_t n_chiffres,
+    FILE *f
+);
 
 void print_solution(
     uint8_t n_max, 
@@ -25,7 +31,6 @@ void print_solution(
     FILE *f
 ); 
 
-
 void print_solution(
     uint8_t n_max, 
     char solution[n_max][SOL_SIZE], 
@@ -33,11 +38,24 @@ void print_solution(
     FILE *f
 ); 
 
+uint16_t process_new_chiffre(
+    uint8_t n_max,
+    uint16_t chiffres[n_max],
+    char solution[n_max][SOL_SIZE],
+    uint8_t n_chiffres,
+    uint32_t used_chiffres,
+    uint16_t min_delta_reached,
+    uint16_t target,
+    uint8_t i,
+    uint8_t j,
+    uint8_t step_ind,
+    char op
+);
 
 int process_chiffres(
     uint8_t n_max,
     uint16_t chiffres[n_max],
-    char solution[n_max][SOL_SIZE];
+    char solution[n_max][SOL_SIZE],
     uint8_t n_chiffres,
     uint32_t used_chiffres,
     uint16_t target,
