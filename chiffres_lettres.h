@@ -6,7 +6,9 @@
 #include "lettres.h"
 
 #define N_MAX_CHIFFRES (15)
+#define N_MAX_CHIFFRES_TOTAL (2 * N_MAX_CHIFFRES - 1)
 #define N_MAX_CHARS_PER_CHIFFRE (5)
+#define N_MAX_SOLUTIONS_CHIFFRES (10)
 #define N_MAX_LETTRES (10)
 
 typedef enum {
