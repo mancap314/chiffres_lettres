@@ -19,7 +19,8 @@ You can also put capital letters and/or separate them:
 ```{sh}
 ./chiffres_lettres.o --values h,KiG,m,N
 ```
-Just don't put accentuated characters such as `ê` or `à`.
+Just don't put accentuated characters such as `ê` or `à`. Candidate words with accents are matched without accent, e.g. the word "déjà" matches the set of lettres 'a', 'd', 'e', 'j'.
+
 
 Solving for *chiffres* (numbers):
 ```{sh}
