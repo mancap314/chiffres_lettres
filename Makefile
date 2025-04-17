@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -O3
+CFLAGS = 
 ifeq ($(OS),Windows_NT)
 	EXT = exe
 	RM = del

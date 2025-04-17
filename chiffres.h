@@ -7,9 +7,6 @@
 #include <time.h>
 #include <string.h>
 
-#define N_NUMBERS (8)
-#define MAX_NUMBER (100)  // Max value a number can take
-#define STEP_SIZE (25)  // Number of character to describe a step
 #define N_OPS (4)
 
 #define DELTA(a, b)  (((a) > (b)) ? ((a) - (b)) : ((b) - (a)))

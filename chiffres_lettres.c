@@ -79,7 +79,7 @@ int main(int argc, char *argv[argc + 1])
 
     /* Handle values */
     if (game == CHIFFRES) {
-        uint16_t chiffres[N_MAX_CHIFFRES_TOTAL] = {0};
+        uint16_t input_chiffres[N_MAX_CHIFFRES] = {0};
         char current_str[N_MAX_CHARS_PER_CHIFFRE] = {0};
         uint8_t char_ind = 0, n_chiffres = 0;
         for (char *x = argv[value_ind]; *x && n_chiffres < N_MAX_CHIFFRES - 1; x++) {
@@ -88,14 +88,14 @@ int main(int argc, char *argv[argc + 1])
                 char_ind++;
             } else if (char_ind > 0) {
                 current_str[char_ind] = '\0';
-                chiffres[n_chiffres] = strtoul(current_str, 0L, 10);
+                input_chiffres[n_chiffres] = strtoul(current_str, 0L, 10);
                 n_chiffres++;
                 char_ind = 0;
             }
         }
         if (char_ind > 0) {
             current_str[char_ind] = '\0';
-            chiffres[n_chiffres] = strtoul(current_str, 0L, 10);
+            input_chiffres[n_chiffres] = strtoul(current_str, 0L, 10);
             n_chiffres++;
         }
         
@@ -106,40 +106,55 @@ int main(int argc, char *argv[argc + 1])
         printf("[INFO] Solving chiffres with following parameters:\n"
                 "\t- chiffres: ");
         for (uint8_t i = 0; i < n_chiffres; i++)
-            printf("%u%s", chiffres[i], i < n_chiffres - 1 ? ", ": "\n");
+            printf("%u%s", input_chiffres[i], i < n_chiffres - 1 ? ", ": "\n");
         printf("\t- target: %u\n", target);
+
         /* Compute and display solutions */
-        uint8_t n_max = 2 * n_chiffres - 1;
+        uint8_t n_max =  2 * n_chiffres - 1;
         uint32_t used_chiffres = 0;
         uint8_t step_ind = 0;
         uint16_t min_delta_reached = UINT16_MAX;
+
+        uint16_t *chiffres = malloc(sizeof(uint16_t) * n_max);
+        if (NULL == chiffres) {
+            fprintf(stderr, "[ERROR] main(): could not malloc chiffres with %u elements\n", n_max);
+            exit(EXIT_FAILURE);
+        }
+          
+        for (uint8_t i = 0; i < n_max; i++) 
+            chiffres[i] = (i < n_chiffres) ? input_chiffres[i]: 0;
+
         solution_t *solution = newSolution(n_max);
         if (NULL == solution) {
             fprintf(stderr, "[ERROR] main(): could not allocate solution.\n");
+            free(chiffres);
             exit(EXIT_FAILURE);
         }
+
         solution_set_t *solution_set = newSolutionSet(N_MAX_SOLUTIONS_CHIFFRES, n_max);
         if (NULL == solution_set) {
             fprintf(stderr, "[ERROR] main(): could not allocate solution_set.\n");
+            free(chiffres);
             free(solution);
             exit(EXIT_FAILURE);
         }
+         
         clock_t start = clock();
         int ret = process_chiffres(n_max, chiffres, solution, solution_set, n_chiffres, used_chiffres, target, min_delta_reached, step_ind);
         clock_t end = clock();
         float duration = ((float)(end - start)) / (float)CLOCKS_PER_SEC;
-        printf("[INFO]: All combinations computed for %u chiffres in %.2fs.\n", n_chiffres, duration); 
+        printf("[INFO] All combinations computed for %u chiffres in %.2fs.\n", n_chiffres, duration); 
 
         if (ret  > 0) {
             fputs("SUCCESS\n", stdout);
             fputs("Best solution(s) found:\n", stdout);
             print_solution_set(solution_set, stdout);
-        }
-        else 
+        } else 
             fputs("FAILURE\n", stderr);
 
         delSolution(solution);
         delSolutionSet(solution_set);
+        free(chiffres);
     } else {  // process lettres
         char letters[N_MAX_LETTRES] = {0};
         uint8_t n_letters = 0;
@@ -178,7 +193,7 @@ int main(int argc, char *argv[argc + 1])
         int ret = load_dictionnaire(fp, n_lines, original_words, words);
         clock_t end = clock();
         float duration = ((float)(end - start)) / (float)CLOCKS_PER_SEC;
-        printf("[INFO] main(): %zu words loaded from dictionnaire file in %.2fs.\n", n_lines, duration); 
+        printf("[INFO] main(): %zu words loaded from dictionnaire file in %.3fs.\n", n_lines, duration); 
 
         /* Search for solutions */
         start = clock();
@@ -188,7 +203,7 @@ int main(int argc, char *argv[argc + 1])
         search_best_matches(n_letters, letters, n_lines, words, &word_matches);
         end = clock();
         duration = ((float)(end - start)) / (float)CLOCKS_PER_SEC;
-        printf("[INFO] main(): matches for %u letters found in %.2fs.\n", n_letters, duration); 
+        printf("[INFO] main(): matches for %u letters found in %.3fs.\n", n_letters, duration); 
         puts("matches:");
         for (uint8_t i = 0; i < word_matches.n_matches; i++)
             printf("\t* %ls\n", original_words[word_matches.positions[i]]);
