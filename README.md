@@ -5,6 +5,8 @@ In short, you can play either:
 * *lettres*: find the longest word given a set of letters
 * *chiffres*: combine numbers with basic arithmetic operations (addition, subtraction, multiplication and division) to approach as close as possible a given target
 
+See [blog article](https://mancap314.github.io/des-chiffres-et-des-lettres.html).
+
 ## Build
 ```{sh}
 make chiffres_lettres
@@ -31,6 +33,6 @@ You can separate the numbers by any non-numerical and non-space character.
 ## Behind the scene
 For chiffres, it goes through every provided number, avoiding computing same operation multiple times, and ensuring that every operation is valid, means it does not result in a negative or rational number.
 
-For lettres, all permutations of the provided letters are generated using the (non-recursive) [Heap's algorithm](https://en.wikipedia.org/wiki/Heap%27s_algorithm). Matches are searched through binary search against [this dictionnary](https://github.com/chrplr/openlexicon/blob/master/datasets-info/Liste-de-mots-francais-Gutenberg/README-liste-francais-Gutenberg.md) of 355k+ French words.
+For lettres, all permutations of the provided letters are generated using the (non-recursive) [Heap's algorithm](https://en.wikipedia.org/wiki/Heap%27s_algorithm). Matches are searched through binary search against [this dictionnary](https://github.com/chrplr/openlexicon/blob/master/datasets-info/Liste-de-mots-francais-Gutenberg/README-liste-francais-Gutenberg.md) of 336k+ French words.
 
 
