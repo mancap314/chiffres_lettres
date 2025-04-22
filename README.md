@@ -15,11 +15,11 @@ make chiffres_lettres
 ## Usage
 Examples, solving for *lettres*:
 ```{sh}
-./chiffres_lettres.o --values abroau
+./chiffres_lettres.o --lettres --values abroau
 ```
 You can also put capital letters and/or separate them:
 ```{sh}
-./chiffres_lettres.o --values h,KiG,m,N
+./chiffres_lettres.o --lettres --values h,KiG,m,N
 ```
 Just don't put accentuated characters such as `ê` or `à`. Candidate words with accents are matched without accent, e.g. the word "déjà" matches the set of lettres 'a', 'd', 'e', 'j'.
 
